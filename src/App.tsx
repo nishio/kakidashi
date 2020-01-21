@@ -4,15 +4,34 @@ import './App.css';
 import { getGlobal, setGlobal, useGlobal } from 'reactn';
 import { IItem, INITIAL_STATE } from './INITIAL_STATE';
 import { local_db } from './IndexedDB';
+import { addItemToFirestore } from "./FirestoreIO";
 
 const addItem = (s: string) => {
   const global = getGlobal();
   const item = {
     text: s,
     created: Date.now(),
+    saved_cloud: false,
+    saved_local: false
   }
+
+  const updateItem = (index: number, diff: { [key: string]: any }) => {
+    const global = getGlobal();
+    const new_item = { ...global.items[index], ...diff }
+    const new_items = [...global.items]
+    new_items[index] = new_item;
+    setGlobal({ items: new_items });
+  }
+
+  const index = global.items.length;
   setGlobal({ items: [...global.items, item] });
-  local_db.items.add(item)
+  local_db.items.add(item).then(() => {
+    updateItem(index, { saved_local: true })
+  })
+  addItemToFirestore(item).then(() => {
+    updateItem(index, { saved_cloud: true })
+    local_db.items.update(item.created, { saved_cloud: true })
+  })
 }
 
 const onKeyPress: KeyboardEventHandler<HTMLTextAreaElement> = (e) => {
@@ -37,7 +56,12 @@ const App: React.FC = () => {
       }
     });
   }
-  const dom_items = items.map((v: IItem) => <p key={v.created}>{v.text}</p>)
+  const dom_items = items.map((v: IItem) =>
+    <p key={v.created}>
+      {v.text}
+      {v.saved_local ? "(local save ok)" : ""}
+      {v.saved_cloud ? "(cloud save ok)" : "(cloud save pending)"}
+    </p>)
   return (
     <div className="App">
       {dom_items}

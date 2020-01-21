@@ -10,7 +10,7 @@ class KakidashiDB extends Dexie {
   constructor() {
     super("KakidashiDB");
     this.version(1).stores({
-      items: 'created, text',
+      items: 'created, text, saved_cloud',
     });
     // The following line is needed if your typescript
     // is compiled using babel instead of tsc:

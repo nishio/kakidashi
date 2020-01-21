@@ -30,6 +30,13 @@ setGlobal(INITIAL_STATE);
 
 const App: React.FC = () => {
   const [items] = useGlobal("items");
+  if (items.length === 0) {
+    local_db.items.toArray().then((local_items) => {
+      if (local_items.length > 0) {
+        setGlobal({ items: local_items })
+      }
+    });
+  }
   const dom_items = items.map((v: IItem) => <p key={v.created}>{v.text}</p>)
   return (
     <div className="App">

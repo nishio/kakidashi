@@ -7,6 +7,7 @@ export interface IItem {
   saved_cloud: boolean,
 }
 
+
 export const INITIAL_STATE = {
   items: [] as IItem[],
 };

@@ -4,7 +4,7 @@ import './App.css';
 import { getGlobal, setGlobal, useGlobal } from 'reactn';
 import { IItem, INITIAL_STATE } from './INITIAL_STATE';
 import { local_db } from './IndexedDB';
-import { addItemToFirestore } from "./FirestoreIO";
+import { addItemToFirestore, getRecent } from "./FirestoreIO";
 
 const updateItem = (index: number, diff: { [key: string]: any }) => {
   const global = getGlobal();
@@ -34,6 +34,7 @@ const addItem = (s: string) => {
   })
 }
 
+
 const onKeyPress: KeyboardEventHandler<HTMLTextAreaElement> = (e) => {
   console.log(e.key)
   if (e.key === "Enter") {
@@ -50,20 +51,8 @@ setGlobal(INITIAL_STATE);
 const App: React.FC = () => {
   const [items] = useGlobal("items");
   if (items.length === 0) {
-    local_db.items.toArray().then((local_items) => {
-      if (local_items.length > 0) {
-        local_items.forEach((item, index) => {
-          if (!item.saved_cloud) {
-            addItemToFirestore(item).then(() => {
-              updateItem(index, { saved_cloud: true })
-              local_db.items.update(item.created, { saved_cloud: true })
-            })
-          }
-          item.saved_local = true;  // because it comes from local DB
-        })
-        setGlobal({ items: local_items })
-      }
-    });
+    localToState();
+    cloudToState();
   }
   const dom_items = items.map((v: IItem) =>
     <p key={v.created}>
@@ -80,3 +69,45 @@ const App: React.FC = () => {
 }
 
 export default App;
+
+function cloudToState() {
+  getRecent().then((snapshot) => {
+    snapshot.docs.forEach((doc) => {
+      const cloud_item = doc.data();
+      local_db.items.get(cloud_item.created).then((local_item) => {
+        if (local_item === undefined) {
+          local_db.items.add({
+            created: cloud_item.created,
+            text: cloud_item.text,
+            saved_cloud: true,
+            saved_local: true,
+          }).then(() => {
+            local_db.items.toArray().then((local_items) => {
+              setGlobal({ items: local_items });
+            });
+          }).catch((error: any) => {
+            console.log(error);
+          });
+        }
+      });
+    });
+  });
+}
+
+function localToState() {
+  local_db.items.toArray().then((local_items) => {
+    if (local_items.length > 0) {
+      local_items.forEach((item, index) => {
+        if (!item.saved_cloud) {
+          addItemToFirestore(item).then(() => {
+            updateItem(index, { saved_cloud: true });
+            local_db.items.update(item.created, { saved_cloud: true });
+          });
+        }
+        item.saved_local = true; // because it comes from local DB
+      });
+      setGlobal({ items: local_items });
+    }
+  });
+}
+

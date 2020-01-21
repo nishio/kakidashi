@@ -13,28 +13,25 @@ export let gotInitialData = false;
 
 const listname = "nishio"
 
+const stateToFirestore = (item: IItem) => {
+  return {
+    created: item.created,
+    text: item.text,
+  } // omit saved_local and saved_cloud
+}
 export const addItemToFirestore = (item: IItem) => {
-  const doc = item;  // when we need to convert data type modify this
+  const doc = stateToFirestore(item);  // when we need to convert data type modify this
   return db.collection("kakidashi").doc(listname).collection("items").add(
     item
   )
 }
 
-const get = () => {
-  var docRef = db.collection("kakidashi").doc(listname);
-  docRef.get().then(function (doc: any) {
-    if (doc.exists) {
-      // use server data
-      //updateFromFirebase(doc.data());
-      console.log(doc.data());
-    }
-    else {
-      // not exists
-    }
-  }).catch(function (error: any) {
-    console.log("Error getting document:", error);
-    gotInitialData = true;
-  });
+export const getRecent = () => {
+  return db.collection("kakidashi").doc(listname)
+    .collection("items")
+    .orderBy('created')
+    .startAt(Date.now() - 24 * 60 * 60 * 1000)
+    .get();
 }
 
 const subscribe = () => {

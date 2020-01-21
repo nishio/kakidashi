@@ -1,5 +1,4 @@
 import 'reactn';
-import { getGlobal, setGlobal, useGlobal } from 'reactn';
 
 export interface IItem {
   created: number,
@@ -9,7 +8,6 @@ export interface IItem {
 export const INITIAL_STATE = {
   items: [] as IItem[],
 };
-setGlobal(INITIAL_STATE);
 
 export type TState = typeof INITIAL_STATE;
 

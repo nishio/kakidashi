@@ -1,14 +1,14 @@
 import Dexie from 'dexie';
 import { IItem } from "./INITIAL_STATE";
 
-class MyAppDatabase extends Dexie {
+class KakidashiDB extends Dexie {
   // Declare implicit table properties.
   // (just to inform Typescript. Instanciated by Dexie in stores() method)
   items: Dexie.Table<IItem, number>; // number = type of the primkey
   //...other tables goes here...
 
   constructor() {
-    super("MyAppDatabase");
+    super("KakidashiDB");
     this.version(1).stores({
       items: 'created, text',
     });
@@ -18,4 +18,4 @@ class MyAppDatabase extends Dexie {
   }
 }
 
-export const local_db = new MyAppDatabase();
+export const local_db = new KakidashiDB();

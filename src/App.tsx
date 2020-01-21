@@ -6,6 +6,14 @@ import { IItem, INITIAL_STATE } from './INITIAL_STATE';
 import { local_db } from './IndexedDB';
 import { addItemToFirestore } from "./FirestoreIO";
 
+const updateItem = (index: number, diff: { [key: string]: any }) => {
+  const global = getGlobal();
+  const new_item = { ...global.items[index], ...diff }
+  const new_items = [...global.items]
+  new_items[index] = new_item;
+  setGlobal({ items: new_items });
+}
+
 const addItem = (s: string) => {
   const global = getGlobal();
   const item = {
@@ -13,14 +21,6 @@ const addItem = (s: string) => {
     created: Date.now(),
     saved_cloud: false,
     saved_local: false
-  }
-
-  const updateItem = (index: number, diff: { [key: string]: any }) => {
-    const global = getGlobal();
-    const new_item = { ...global.items[index], ...diff }
-    const new_items = [...global.items]
-    new_items[index] = new_item;
-    setGlobal({ items: new_items });
   }
 
   const index = global.items.length;
@@ -52,6 +52,15 @@ const App: React.FC = () => {
   if (items.length === 0) {
     local_db.items.toArray().then((local_items) => {
       if (local_items.length > 0) {
+        local_items.forEach((item, index) => {
+          if (!item.saved_cloud) {
+            addItemToFirestore(item).then(() => {
+              updateItem(index, { saved_cloud: true })
+              local_db.items.update(item.created, { saved_cloud: true })
+            })
+          }
+          item.saved_local = true;  // because it comes from local DB
+        })
         setGlobal({ items: local_items })
       }
     });

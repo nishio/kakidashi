@@ -53,6 +53,8 @@ export function cloudToState() {
         }
       });
     });
+  }).catch((e: any) => {
+    console.log(e);
   });
 }
 export function localToState() {

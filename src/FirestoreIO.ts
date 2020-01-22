@@ -1,4 +1,5 @@
-import firebase from 'firebase';
+import firebase from 'firebase/app';
+import 'firebase/firestore';
 import { IItem } from './INITIAL_STATE';
 
 const config = {
@@ -6,10 +7,9 @@ const config = {
   authDomain: "regroup-d4932.firebaseapp.com",
   projectId: "regroup-d4932",
 };
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 const app = firebase.initializeApp(config);
 const db = firebase.firestore();
-
-export let gotInitialData = false;
 
 const listname = "nishio"
 
@@ -22,7 +22,7 @@ const stateToFirestore = (item: IItem) => {
 export const addItemToFirestore = (item: IItem) => {
   const doc = stateToFirestore(item);  // when we need to convert data type modify this
   return db.collection("kakidashi").doc(listname).collection("items").add(
-    item
+    doc
   )
 }
 
@@ -34,13 +34,15 @@ export const getRecent = () => {
     .get();
 }
 
-const subscribe = () => {
-  var docRef = db.collection("kakidashi").doc(listname);
-  var unsubscribe = db.collection("kakidashi").doc(listname).onSnapshot((doc: any) => {
-    console.log("update on server");
-    //updateFromFirebase(doc.data());
-    console.log(doc.data())
-  });
+const subscribe = () => {  // eslint-disable-line @typescript-eslint/no-unused-vars
+  var docRef  // eslint-disable-line @typescript-eslint/no-unused-vars
+    = db.collection("kakidashi").doc(listname);
+  var unsubscribe  // eslint-disable-line @typescript-eslint/no-unused-vars
+    = db.collection("kakidashi").doc(listname).onSnapshot((doc: any) => {
+      console.log("update on server");
+      //updateFromFirebase(doc.data());
+      console.log(doc.data())
+    });
 };
 
 export default db;

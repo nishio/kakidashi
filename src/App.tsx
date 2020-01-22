@@ -32,7 +32,14 @@ const App: React.FC = () => {
       "textAlign": "left"
     }}>
       {dom_items}
-      < TextareaAutosize onKeyPress={onKeyPress} ></TextareaAutosize >
+      <TextareaAutosize onKeyPress={onKeyPress}
+        style={{
+          height: "13px",
+          width: "100%",
+          filter: "drop-shadow(0px 6px 6px black)",
+          fontSize: "16px",
+        }}
+      ></TextareaAutosize >
     </div >
   );
 }
@@ -44,6 +51,7 @@ const ItemComponent = (prop: IItem) => {
   } else {
     css["borderLeft"] = "5px solid green"
   }
+  css["fontSize"] = "13px"
   return <p style={css}>
     {prop.text}
   </p>

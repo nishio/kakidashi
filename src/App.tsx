@@ -25,7 +25,7 @@ const App: React.FC = () => {
     cloudToState();
   }
   const dom_items = items.map((item: IItem) =>
-    <ItemComponent {...item}></ItemComponent>
+    <ItemComponent {...item} key={item.created}></ItemComponent>
   )
   return (
     <div className="App" style={{
@@ -44,7 +44,7 @@ const ItemComponent = (prop: IItem) => {
   } else {
     css["borderLeft"] = "5px solid green"
   }
-  return <p key={prop.created} style={css}>
+  return <p style={css}>
     {prop.text}
   </p>
   // { prop.saved_local ? "(local save ok)" : "" }

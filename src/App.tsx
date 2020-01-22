@@ -41,13 +41,15 @@ const ItemComponent = (prop: IItem) => {
   let css = {} as any;
   if (!prop.saved_local || !prop.saved_cloud) {
     css["borderLeft"] = "5px solid red"
+  } else {
+    css["borderLeft"] = "5px solid green"
   }
-  css["borderLeft"] = "5px solid green"
   return <p key={prop.created} style={css}>
     {prop.text}
-    {prop.saved_local ? "(local save ok)" : ""}
-    {prop.saved_cloud ? "(cloud save ok)" : "(cloud save pending)"}
   </p>
+  // { prop.saved_local ? "(local save ok)" : "" }
+  // { prop.saved_cloud ? "(cloud save ok)" : "(cloud save pending)" }
+
 }
 export default App;
 

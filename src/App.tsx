@@ -24,20 +24,31 @@ const App: React.FC = () => {
     localToState();
     cloudToState();
   }
-  const dom_items = items.map((v: IItem) =>
-    <p key={v.created}>
-      {v.text}
-      {v.saved_local ? "(local save ok)" : ""}
-      {v.saved_cloud ? "(cloud save ok)" : "(cloud save pending)"}
-    </p>)
+  const dom_items = items.map((item: IItem) =>
+    <ItemComponent {...item}></ItemComponent>
+  )
   return (
-    <div className="App">
+    <div className="App" style={{
+      "textAlign": "left"
+    }}>
       {dom_items}
-      <TextareaAutosize onKeyPress={onKeyPress}></TextareaAutosize>
-    </div>
+      < TextareaAutosize onKeyPress={onKeyPress} ></TextareaAutosize >
+    </div >
   );
 }
 
+const ItemComponent = (prop: IItem) => {
+  let css = {} as any;
+  if (!prop.saved_local || !prop.saved_cloud) {
+    css["borderLeft"] = "5px solid red"
+  }
+  css["borderLeft"] = "5px solid green"
+  return <p key={prop.created} style={css}>
+    {prop.text}
+    {prop.saved_local ? "(local save ok)" : ""}
+    {prop.saved_cloud ? "(cloud save ok)" : "(cloud save pending)"}
+  </p>
+}
 export default App;
 
 

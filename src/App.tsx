@@ -83,12 +83,13 @@ const App: React.FC = () => {
       "textAlign": "left"
     }}>
       {dom_items}
-      <TextareaAutosize onKeyPress={onKeyPress} onFocus={onFocus}
+      <TextareaAutosize onKeyPress={onKeyPress}
+        onFocus={onFocus} onHeightChange={scrollToBottom}
         style={{
           height: "13px",
           width: "100%",
           filter: "drop-shadow(0px 0px 6px black)",
-          fontSize: "16px",
+          fontSize: "20px",
         }}
       ></TextareaAutosize >
     </div >

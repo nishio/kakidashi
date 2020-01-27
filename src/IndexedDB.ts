@@ -7,8 +7,8 @@ class KakidashiDB extends Dexie {
   items: Dexie.Table<IItem, number>; // number = type of the primkey
   //...other tables goes here...
 
-  constructor() {
-    super("KakidashiDB");
+  constructor(listname: string) {
+    super("KakidashiDB_" + listname);
     this.version(1).stores({
       items: 'created, text, saved_cloud',
     });
@@ -18,4 +18,7 @@ class KakidashiDB extends Dexie {
   }
 }
 
-export const local_db = new KakidashiDB();
+export const change_local_db = (key: string) => {
+  local_db = new KakidashiDB(key);
+}
+export let local_db = new KakidashiDB("sandbox");;

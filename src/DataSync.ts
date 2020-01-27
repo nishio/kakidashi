@@ -1,5 +1,5 @@
 import { getGlobal, setGlobal } from 'reactn';
-import { local_db } from './IndexedDB';
+import { local_db, change_local_db } from './IndexedDB';
 import { addItemToFirestore, getRecent } from './FirestoreIO';
 
 //DataSync
@@ -25,10 +25,16 @@ export const addItem = (s: string) => {
   local_db.items.add(item).then(() => {
     updateItem(index, { saved_local: true })
   })
-  addItemToFirestore(item).then(() => {
-    updateItem(index, { saved_cloud: true })
-    local_db.items.update(item.created, { saved_cloud: true })
-  })
+
+  const listname = global.listname;
+  if (listname !== "") {
+    addItemToFirestore(item).then(() => {
+      updateItem(index, { saved_cloud: true })
+      local_db.items.update(item.created, { saved_cloud: true })
+    }).catch((e) => {
+      console.log(e);
+    })
+  }
 }
 
 
@@ -57,11 +63,13 @@ export function cloudToState() {
     console.log(e);
   });
 }
-export function localToState() {
+export function localToState(key: string) {
+  change_local_db(key)
   local_db.items.toArray().then((local_items) => {
+    const global = getGlobal();
     if (local_items.length > 0) {
       local_items.forEach((item, index) => {
-        if (!item.saved_cloud) {
+        if (!item.saved_cloud && global.listname !== "") {
           addItemToFirestore(item).then(() => {
             updateItem(index, { saved_cloud: true });
             local_db.items.update(item.created, { saved_cloud: true });

@@ -1,7 +1,8 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import './index.css';
+import { HashRouter, Route, Switch } from 'react-router-dom';
 import App from './App';
+import './index.css';
 import * as serviceWorker from './serviceWorker';
 
 class ErrorBoundary extends React.Component<any, any> {
@@ -31,10 +32,21 @@ class ErrorBoundary extends React.Component<any, any> {
   }
 }
 
+const Router = () => {
+  return <HashRouter hashType="noslash">
+    <Switch>
+      <Route path="/" exact children={<Guide />} />
+      <Route path="/k=:key" exact children={<App />} />
+    </Switch>
+  </HashRouter>
+}
 
+const Guide = () => {
+  return <a href="https://scrapbox.io/nishio/%E3%83%A2%E3%83%90%E3%82%A4%E3%83%AB%E6%9B%B8%E3%81%8D%E5%87%BA%E3%81%97%E3%83%84%E3%83%BC%E3%83%AB">guide</a>
+}
 ReactDOM.render(
   <ErrorBoundary>
-    <App />
+    <Router />
   </ErrorBoundary>
   , document.getElementById('root'));
 

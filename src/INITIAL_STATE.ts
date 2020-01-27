@@ -10,6 +10,8 @@ export interface IItem {
 
 export const INITIAL_STATE = {
   items: [] as IItem[],
+  listname: "",
+  state: "NORMAL" as ("NORMAL" | "WAIT_NEW" | "CREATED_NEW"),
 };
 
 export type TState = typeof INITIAL_STATE;

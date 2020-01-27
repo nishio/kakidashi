@@ -22,6 +22,14 @@ const scrollToBottom = () => {
 const onFocus = () => {
   scrollToBottom();
 }
+let prevInnerHeight: number = 0;
+setInterval(() => {
+  const currentInnerHeight = window.innerHeight;
+  if (currentInnerHeight != prevInnerHeight) {
+    prevInnerHeight = currentInnerHeight;
+    scrollToBottom()
+  }
+})
 
 setGlobal(INITIAL_STATE);
 

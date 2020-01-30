@@ -6,6 +6,7 @@ import { addItem, cloudToState, localToState } from './DataSync';
 import { IItem, INITIAL_STATE } from './INITIAL_STATE';
 import { useParams, Redirect } from 'react-router-dom';
 import { create_new_key, key_to_listname } from './FirestoreIO';
+import { ItemComponent } from './ItemComponent';
 
 const onKeyPress: KeyboardEventHandler<HTMLTextAreaElement> = (e) => {
   if (e.key === "Enter") {
@@ -114,31 +115,6 @@ const App: React.FC = () => {
   );
 }
 
-const ItemComponent = (prop: IItem) => {
-  let css = {} as any;
-  if (!prop.saved_local || !prop.saved_cloud) {
-    css["borderLeft"] = "5px solid red"
-  } else {
-    css["borderLeft"] = "5px solid green"
-  }
-  css["fontSize"] = "16px"
-  css["paddingLeft"] = "3px"
-
-  if (prop.text.match(/\[https:\/\/gyazo\.com\/([^/]*)\]/)) {
-    const hash = RegExp.$1;
-    const src = `https://gyazo.com/${hash}/thumb/400`
-    const alt = `[https://gyazo.com/${hash}]`
-    return <> <img src={src} alt={alt} style={css} /> <br /></>
-  } else if (prop.text.match(/https:\/\/gyazo\.com\/([^/]*)/)) {
-    const hash = RegExp.$1;
-    const src = `https://gyazo.com/${hash}/thumb/400`
-    const alt = `[https://gyazo.com/${hash}]`
-    return <img src={src} alt={alt} style={css}></img>
-  }
-  return <span style={css}>
-    {prop.text}<br />
-  </span>
-}
 export default App;
 
 

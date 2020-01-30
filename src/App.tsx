@@ -123,12 +123,21 @@ const ItemComponent = (prop: IItem) => {
   }
   css["fontSize"] = "16px"
   css["paddingLeft"] = "3px"
+
+  if (prop.text.match(/\[https:\/\/gyazo\.com\/([^/]*)\]/)) {
+    const hash = RegExp.$1;
+    const src = `https://gyazo.com/${hash}/thumb/400`
+    const alt = `[https://gyazo.com/${hash}]`
+    return <> <img src={src} alt={alt} style={css} /> <br /></>
+  } else if (prop.text.match(/https:\/\/gyazo\.com\/([^/]*)/)) {
+    const hash = RegExp.$1;
+    const src = `https://gyazo.com/${hash}/thumb/400`
+    const alt = `[https://gyazo.com/${hash}]`
+    return <img src={src} alt={alt} style={css}></img>
+  }
   return <span style={css}>
     {prop.text}<br />
   </span>
-  // { prop.saved_local ? "(local save ok)" : "" }
-  // { prop.saved_cloud ? "(cloud save ok)" : "(cloud save pending)" }
-
 }
 export default App;
 

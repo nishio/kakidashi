@@ -44,9 +44,14 @@ const App: React.FC = () => {
   useEffect(() => {
     document.addEventListener("visibilitychange", function () {
       if (!document.visibilityState) {
-        const e = document.getElementById("text")!;
-        e.focus()
-        e.blur()
+        // const e = document.getElementById("text")!;
+        // e.blur()
+        if (document.activeElement !== null) {
+          if ((document.activeElement as any).blur) {
+            // @ts-ignore
+            document.activeElement.blur()
+          }
+        }
       }
     });
   }, [])

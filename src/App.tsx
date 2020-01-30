@@ -22,6 +22,7 @@ const scrollToBottom = () => {
 const onFocus = () => {
   scrollToBottom();
 }
+
 let prevInnerHeight: number = 0;
 setInterval(() => {
   const currentInnerHeight = window.innerHeight;
@@ -38,6 +39,15 @@ const App: React.FC = () => {
   const [listname] = useGlobal("listname");
   const [state, setState] = useGlobal("state");
   const { key } = useParams();
+
+  useEffect(() => {
+    document.addEventListener("visibilitychange", function () {
+      if (!document.visibilityState) {
+        document.getElementById("text")!.blur()
+      }
+    });
+  }, [])
+
   useEffect(() => {
     if (state === "NORMAL") {
       if (key === "new") {
@@ -91,7 +101,7 @@ const App: React.FC = () => {
       "textAlign": "left"
     }}>
       {dom_items}
-      <TextareaAutosize onKeyPress={onKeyPress}
+      <TextareaAutosize id="text" onKeyPress={onKeyPress}
         onFocus={onFocus} onHeightChange={scrollToBottom}
         style={{
           height: "13px",

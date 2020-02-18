@@ -1,4 +1,5 @@
 [[redirects]]
   from = "/k=*"
-  to = "/ k=:splat"
-  status = 200
+  to = "/"
+  status = 301
+  query = {k = ":splat"}

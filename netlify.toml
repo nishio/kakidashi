@@ -1,5 +1,4 @@
 [[redirects]]
-  from = "/k/*"
+  from = "/*"
   to = "/index.html"
   status = 200
-  query = {k = ":splat"}

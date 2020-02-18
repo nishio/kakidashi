@@ -47,7 +47,7 @@ const App = (props: Props) => {
   console.log("App", key, props)
   useEffect(() => {
     document.addEventListener("visibilitychange", function () {
-      if (document.visibilityState == "hidden") {
+      if (document.visibilityState === "hidden") {
         if (document.activeElement) {
           // @ts-ignore
           if (document.activeElement.blur) {
@@ -116,7 +116,7 @@ const App = (props: Props) => {
         onFocus={onFocus} onHeightChange={scrollToBottom}
         style={{
           height: "20px",
-          width: "100%",
+          width: "95%",
           filter: "drop-shadow(0px 0px 6px black)",
           fontSize: "20px",
         }}

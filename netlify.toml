@@ -1,0 +1,4 @@
+[[redirects]]
+  from = "/k=*"
+  to = "/ k=:splat"
+  status = 200

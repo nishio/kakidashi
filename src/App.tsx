@@ -1,5 +1,5 @@
 import React, { KeyboardEventHandler, useEffect } from 'react';
-import { Redirect, useParams } from 'react-router-dom';
+import { Redirect } from 'react-router-dom';
 import TextareaAutosize from 'react-textarea-autosize';
 import { setGlobal, useGlobal } from 'reactn';
 import './App.css';
@@ -35,12 +35,16 @@ setInterval(() => {
 
 setGlobal(INITIAL_STATE);
 
-const App: React.FC = () => {
+type Props = {
+  keyToList: string
+}
+
+const App = (props: Props) => {
   const [items] = useGlobal("items");
   const [listname] = useGlobal("listname");
   const [state, setState] = useGlobal("state");
-  const { key } = useParams();
-
+  const key = props.keyToList;
+  console.log("App", key, props)
   useEffect(() => {
     document.addEventListener("visibilitychange", function () {
       if (!document.visibilityState) {

@@ -1,11 +1,11 @@
 import React, { KeyboardEventHandler, useEffect } from 'react';
+import { Redirect, useParams } from 'react-router-dom';
 import TextareaAutosize from 'react-textarea-autosize';
 import { setGlobal, useGlobal } from 'reactn';
 import './App.css';
 import { addItem, cloudToState, localToState } from './DataSync';
-import { IItem, INITIAL_STATE } from './INITIAL_STATE';
-import { useParams, Redirect } from 'react-router-dom';
 import { create_new_key, key_to_listname } from './FirestoreIO';
+import { IItem, INITIAL_STATE } from './INITIAL_STATE';
 import { ItemComponent } from './ItemComponent';
 
 const onKeyPress: KeyboardEventHandler<HTMLTextAreaElement> = (e) => {

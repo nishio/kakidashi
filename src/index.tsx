@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { BrowserRouter, useLocation } from 'react-router-dom';
+import { BrowserRouter, useLocation, Route, useParams } from 'react-router-dom';
 import App from './App';
 import './index.css';
 import * as serviceWorker from './serviceWorker';
@@ -38,6 +38,10 @@ const Router = () => {
   if (keyToList) {
     return <App keyToList={keyToList} />;
   }
+  return <Guide />
+}
+
+const Guide = () => {
   return <a href="https://scrapbox.io/nishio/%E3%83%A2%E3%83%90%E3%82%A4%E3%83%AB%E6%9B%B8%E3%81%8D%E5%87%BA%E3%81%97%E3%83%84%E3%83%BC%E3%83%AB">guide</a>
 }
 
@@ -45,10 +49,19 @@ function useQuery() {
   return new URLSearchParams(useLocation().search);
 }
 
+const AppUseKey = () => {
+  const { key } = useParams()
+  if (key) {
+    return <App keyToList={key} />
+  }
+  return <Guide />
+}
+
 ReactDOM.render(
   <ErrorBoundary>
     <BrowserRouter>
-      <Router />
+      <Route path="/" exact children={<Router />} />
+      <Route path="/k=:key" exact children={<AppUseKey />} />
     </BrowserRouter>
   </ErrorBoundary>,
   document.getElementById('root'));

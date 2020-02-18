@@ -61,6 +61,7 @@ ReactDOM.render(
   <ErrorBoundary>
     <BrowserRouter>
       <Route path="/" exact children={<Router />} />
+      <Route path="/k/:key" exact children={<AppUseKey />} />
       <Route path="/k=:key" exact children={<AppUseKey />} />
     </BrowserRouter>
   </ErrorBoundary>,

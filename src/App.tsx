@@ -18,9 +18,17 @@ const onKeyPress: KeyboardEventHandler<HTMLTextAreaElement> = (e) => {
 }
 
 const scrollToBottom = () => {
-  window.scrollTo(0, document.body.scrollHeight);
+  console.log("scrollToBottom")
+  const h = document.body.scrollHeight;
+  const X = 495;
+  if (h < X) {
+  } else {
+    window.scrollTo(0, h - X)
+  }
 }
+
 const onFocus = () => {
+  console.log("onFocus")
   scrollToBottom();
 }
 
@@ -107,7 +115,7 @@ const App = (props: Props) => {
       <TextareaAutosize id="text" onKeyPress={onKeyPress}
         onFocus={onFocus} onHeightChange={scrollToBottom}
         style={{
-          height: "13px",
+          height: "20px",
           width: "100%",
           filter: "drop-shadow(0px 0px 6px black)",
           fontSize: "20px",

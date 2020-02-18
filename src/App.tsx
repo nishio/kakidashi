@@ -47,11 +47,10 @@ const App = (props: Props) => {
   console.log("App", key, props)
   useEffect(() => {
     document.addEventListener("visibilitychange", function () {
-      if (!document.visibilityState) {
-        // const e = document.getElementById("text")!;
-        // e.blur()
-        if (document.activeElement !== null) {
-          if ((document.activeElement as any).blur) {
+      if (document.visibilityState == "hidden") {
+        if (document.activeElement) {
+          // @ts-ignore
+          if (document.activeElement.blur) {
             // @ts-ignore
             document.activeElement.blur()
           }

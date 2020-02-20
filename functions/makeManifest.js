@@ -1,6 +1,6 @@
 let base = {
-  "short_name": "React App",
-  "name": "Create React App Sample",
+  "short_name": "Kakidashi",
+  "name": "Kakidashi Tool",
   "icons": [
     {
       "src": "favicon.ico",
@@ -25,7 +25,7 @@ let base = {
 }
 
 exports.handler = function (event, context, callback) {
-  start_url = event.queryStringParameters
+  start_url = event.queryStringParameters.start_url
   base.start_url = start_url
   callback(null, {
     statusCode: 200,

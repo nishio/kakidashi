@@ -7,6 +7,7 @@ import { addItem, cloudToState, localToState } from './DataSync';
 import { create_new_key, key_to_listname } from './FirestoreIO';
 import { IItem, INITIAL_STATE } from './INITIAL_STATE';
 import { ItemComponent } from './ItemComponent';
+import { Helmet } from 'react-helmet';
 
 const onKeyPress: KeyboardEventHandler<HTMLTextAreaElement> = (e) => {
   if (e.key === "Enter") {
@@ -113,6 +114,10 @@ const App = (props: Props) => {
     <div className="App" style={{
       "textAlign": "left"
     }}>
+      <Helmet>
+        <link rel="manifest" href={`/.netlify/functions/makeManifest?start_url=/k=${key}`} />
+      </Helmet>
+
       {dom_items}
       <TextareaAutosize id="text" onKeyPress={onKeyPress}
         onFocus={onFocus} onHeightChange={scrollToBottom}

@@ -22,6 +22,8 @@ const scrollToBottom = () => {
   const h = document.body.scrollHeight;
   const X = 495;
   if (h < X) {
+  } else if (h > 700) {
+    window.scrollTo(0, h)
   } else {
     window.scrollTo(0, h - X)
   }
